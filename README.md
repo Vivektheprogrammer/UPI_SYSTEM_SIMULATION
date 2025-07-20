@@ -24,7 +24,7 @@ Visit the live application: [UPI Payment System](https://vivektheprogrammer.gith
 - **Styling**: CSS Grid & Flexbox for responsive layouts
 
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -45,8 +45,6 @@ Visit the live application: [UPI Payment System](https://vivektheprogrammer.gith
 
 3. Open `index.html` in your web browser or use a local server:
 
-
-4. Visit `http://127.0.0.1:5500/index.html` in your browser
 
 ## Usage
 
