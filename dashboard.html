@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h2>MCA UPI</h2>
+                <span id="userGreeting">Welcome back!</span>
+            </div>
+            <div class="header-right">
+                <div class="user-menu">
+                    <button class="btn-icon" onclick="toggleUserMenu()" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <div id="userDropdown" class="user-dropdown">
+                        <div class="user-info">
+                            <span id="userNameDropdown">User Name</span>
+                            <small id="userUpiDropdown">user@mca</small>
+                        </div>
+                        <hr>
+                        <button class="dropdown-item" onclick="showProfile()">
+                            <i class="fas fa-user"></i> Profile
+                        </button>
+                        <button class="dropdown-item" onclick="showAllTransactions()">
+                            <i class="fas fa-history"></i> Transaction History
+                        </button>
+                        <button class="dropdown-item" onclick="showSettings()">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                        <hr>
+                        <button class="dropdown-item logout-item" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+                <button class="btn-logout mobile-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="balance-card">
+                <div class="balance-info">
+                    <h3>Available Balance</h3>
+                    <div class="balance-amount">₹<span id="walletBalance">5,000.00</span></div>
+                    <p>UPI ID: <span id="userUpiId">user@mca</span></p>
+                </div>
+                <button class="btn-primary" onclick="showAddMoney()">Add Money</button>
+            </div>
+
+            <div class="quick-actions">
+                <div class="action-grid">
+                    <div class="action-card" onclick="showSendMoney()">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Money</span>
+                    </div>
+                    <div class="action-card" onclick="showRequestMoney()">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Request Money</span>
+                    </div>
+                    <div class="action-card" onclick="showQRScanner()">
+                        <i class="fas fa-qrcode"></i>
+                        <span>Scan QR</span>
+                    </div>
+                    <div class="action-card" onclick="showMyQR()">
+                        <i class="fas fa-qrcode"></i>
+                        <span>My QR Code</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="transaction-section">
+                <div class="section-header">
+                    <h3>Recent Transactions</h3>
+                    <button class="btn-link" onclick="showAllTransactions()">View All</button>
+                </div>
+                <div id="transactionList" class="transaction-list">
+                    <!-- Transactions will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Money Modal -->
+    <div id="sendMoneyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sendMoneyModal')">&times;</span>
+            <h2>Send Money</h2>
+            <form id="sendMoneyForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="recipientUPI" placeholder="Enter UPI ID or Mobile Number" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-rupee-sign"></i>
+                    <input type="number" id="sendAmount" placeholder="Enter amount" min="1" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-comment"></i>
+                    <input type="text" id="sendNote" placeholder="Add a note (optional)">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="sendPin" placeholder="Enter PIN to confirm" maxlength="4" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Send Money</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Money Modal -->
+    <div id="requestMoneyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('requestMoneyModal')">&times;</span>
+            <h2>Request Money</h2>
+            <form id="requestMoneyForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="requestFromUPI" placeholder="Enter UPI ID or Mobile Number" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-rupee-sign"></i>
+                    <input type="number" id="requestAmount" placeholder="Enter amount" min="1" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-comment"></i>
+                    <input type="text" id="requestNote" placeholder="Add a note (optional)">
+                </div>
+                <button type="submit" class="btn-primary btn-full">Send Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Money Modal -->
+    <div id="addMoneyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addMoneyModal')">&times;</span>
+            <h2>Add Money to Wallet</h2>
+            <form id="addMoneyForm">
+                <div class="input-group">
+                    <i class="fas fa-rupee-sign"></i>
+                    <input type="number" id="addAmount" placeholder="Enter amount" min="1" required>
+                </div>
+                <div class="payment-methods">
+                    <h4>Select Payment Method</h4>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="card" checked>
+                        <div class="payment-content">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Credit/Debit Card</span>
+                        </div>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="netbanking">
+                        <div class="payment-content">
+                            <i class="fas fa-university"></i>
+                            <span>Net Banking</span>
+                        </div>
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Add Money</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- QR Scanner Modal -->
+    <div id="qrScannerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('qrScannerModal')">&times;</span>
+            <h2>Scan QR Code</h2>
+            <div class="qr-scanner">
+                <div id="qrReader">
+                    <div class="scanner-frame">
+                        <i class="fas fa-camera"></i>
+                        <p>Camera will appear here</p>
+                    </div>
+                </div>
+                <p>Point your camera at the QR code</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- My QR Modal -->
+    <div id="myQRModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('myQRModal')">&times;</span>
+            <h2>My QR Code</h2>
+            <div class="qr-display">
+                <div id="userQRCode"></div>
+                <p>Share this QR code to receive payments</p>
+                <div class="qr-actions">
+                    <button class="btn-secondary" onclick="downloadQR()">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn-primary" onclick="shareQR()">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content logout-confirm">
+            <h2>Confirm Logout</h2>
+            <div class="logout-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <p>Are you sure you want to logout from your account?</p>
+            <div class="logout-actions">
+                <button class="btn-secondary" onclick="closeModal('logoutModal')">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

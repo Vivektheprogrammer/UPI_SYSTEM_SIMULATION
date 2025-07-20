@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Payment System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-mobile-alt"></i>
+                <h1>MCA UPI</h1>
+            </div>
+            <nav class="nav">
+                <button class="btn-secondary" onclick="showLogin()">Login</button>
+                <button class="btn-primary" onclick="showRegister()">Sign Up</button>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <div class="hero-content">
+                <h2>Fast, Secure, and Simple UPI Payments</h2>
+                <p>Send and receive money instantly with our secure UPI payment system</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-qrcode"></i>
+                        <h3>QR Code Payments</h3>
+                        <p>Scan and pay instantly</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Secure Transactions</h3>
+                        <p>Bank-grade security</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <h3>24/7 Available</h3>
+                        <p>Pay anytime, anywhere</p>
+                    </div>
+                </div>
+                <button class="btn-primary btn-large" onclick="showRegister()">Get Started</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to Your Account</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="loginPhone" placeholder="Enter mobile number" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPin" placeholder="Enter PIN" maxlength="4" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="showRegister(); closeModal('loginModal')">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Create New Account</h2>
+            <form id="registerForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="registerPhone" placeholder="Mobile Number" maxlength="10" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPin" placeholder="Create 4-digit PIN" maxlength="4" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirmPin" placeholder="Confirm PIN" maxlength="4" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Create Account</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="showLogin(); closeModal('registerModal')">Login</a></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
